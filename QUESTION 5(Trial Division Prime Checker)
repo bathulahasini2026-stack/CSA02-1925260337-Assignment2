@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int n;
+    int checks = 0;
+
+    /* READ n */
+    printf("Enter a number: ");
+    scanf("%d", &n);
+
+    if (n < 2) {
+        printf("Not Prime\n");
+        return 0;                      /* STOP */
+    }
+
+    for (int i = 2; i <= n - 1; i++) {
+
+        checks = checks + 1;
+
+        if (n % i == 0) {
+            printf("Not Prime\n");
+            printf("Checks: %d\n", checks);
+            return 0;                  /* STOP */
+        }
+    }
+
+    printf("Prime\n");
+    printf("Checks: %d\n", checks);
+
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter a number	any integer, e.g. 17
+
+//Sample runs and the OUTPUTS
+
+//Enter a number: 17
+//Prime
+//Checks: 15
+//Enter a number: 20
+//Not Prime
+//Checks: 1
+//Enter a number: 1
+//Not Prime
+//Enter a number: 2
+//Prime
+//Checks: 0
+
+//How the checks count works
+
+//n	Result	Checks	Why
+//20	Not Prime	1	divisible by 2 on the first check
+//21	Not Prime	2	tries 2, then 3 divides it
+//17	Prime	15	tries every i from 2 to 16
+//2	Prime	0	the loop from 2 to 1 never runs
+
