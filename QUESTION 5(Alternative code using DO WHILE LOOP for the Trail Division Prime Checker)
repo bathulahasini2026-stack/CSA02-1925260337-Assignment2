@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+int main(void)
+{
+    long long n;
+    long long i;
+    int checks = 0;
+
+    /* READ n */
+    printf("Enter a number: ");
+    scanf("%lld", &n);
+
+    if (n < 2) {
+        printf("Not Prime\n");
+        return 0;                      /* STOP */
+    }
+
+    i = 2;
+
+    do {
+
+        if (i * i > n) {
+            break;                     /* EXIT LOOP */
+        }
+
+        checks = checks + 1;
+
+        if (n % i == 0) {
+            printf("Not Prime\n");
+            printf("Checks: %d\n", checks);
+            return 0;                  /* STOP */
+        }
+
+        i = i + 1;
+
+    } while (1);                       /* WHILE TRUE */
+
+    printf("Prime\n");
+    printf("Checks: %d\n", checks);
+
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter a number	any integer, e.g. 17
+
+//Sample runs
+
+//Enter a number: 17
+//Prime
+//Checks: 3
+//Enter a number: 25
+//Not Prime
+//Checks: 4
+//Enter a number: 1
+//Not Prime
+//Enter a number: 2
+//Prime
+//Checks: 0
