@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+int main(void)
+{
+    int N;
+
+    /* READ N */
+    printf("Enter N: ");
+    if (scanf("%d", &N) != 1 || N < 0) {
+        printf("Invalid input\n");
+        return 1;
+    }
+
+    /* CREATE PRIME ARRAY FROM 0 TO N */
+    bool *prime = (bool *)malloc((N + 1) * sizeof(bool));
+    if (prime == NULL) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    /* MARK ALL VALUES AS TRUE */
+    for (int i = 0; i <= N; i++) {
+        prime[i] = true;
+    }
+
+    /* MARK 0 AND 1 AS FALSE */
+    prime[0] = false;
+    if (N >= 1) {
+        prime[1] = false;
+    }
+
+    /* FOR p = 2 TO SQUARE ROOT OF N */
+    for (long long p = 2; p * p <= N; p++) {
+
+        if (prime[p] == true) {
+
+            for (long long multiple = p * p; multiple <= N; multiple += p) {
+                prime[multiple] = false;
+            }
+        }
+    }
+
+    /* DISPLAY ALL VALUES MARKED TRUE */
+    printf("Prime numbers up to %d:\n", N);
+    for (int number = 0; number <= N; number++) {
+        if (prime[number] == true) {
+            printf("%d ", number);
+        }
+    }
+    printf("\n");
+
+    free(prime);
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter N	a non-negative integer, e.g. 30
+
+//Sample runs
+
+//Enter N: 30
+//Prime numbers up to 30:
+//2 3 5 7 11 13 17 19 23 29
+//Enter N: 10
+//Prime numbers up to 10:
+//2 3 5 7
