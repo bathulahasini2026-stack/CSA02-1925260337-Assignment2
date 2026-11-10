@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+int main(void)
+{
+    unsigned int reg;
+    int device_position;
+    unsigned int mask;
+    unsigned int result;
+
+    /* READ register */
+    printf("Enter register value (0 to 255): ");
+    scanf("%u", &reg);
+
+    /* READ device_position */
+    printf("Enter device position (0 to 7): ");
+    scanf("%d", &device_position);
+
+    /* Validate (a bad shift is undefined behavior in C) */
+    if (reg > 255 || device_position < 0 || device_position > 7) {
+        printf("Invalid input\n");
+        return 1;
+    }
+
+    mask = 1U << device_position;      /* 1 LEFT SHIFT device_position */
+
+    result = reg & mask;               /* register AND mask */
+
+    if (result != 0) {
+        printf("Device is ON\n");
+    } else {
+        printf("Device is OFF\n");
+    }
+
+    return 0;
+}
+
+//Inputs
+
+//Prompt	Enter	Meaning
+//Register value	a number from 0 to 255	the current 8-bit register, in decimal
+//Device position	a number from 0 to 7	the bit (device) to check (0 = rightmost bit)
+
+//Sample runs
+
+//Enter register value (0 to 255): 5
+//Enter device position (0 to 7): 2
+//Device is ON
+//Enter register value (0 to 255): 5
+//Enter device position (0 to 7): 1
+//Device is OFF
+
+//How it works (register = 5, device_position = 2)
+
+//Step	Calculation	Result
+//mask	1 << 2	00000100
+//result	00000101 AND 00000100	00000100 (not zero)
+
+//Since the result is not zero, the device is ON. For position 1, the mask is 00000010, and 00000101 AND 00000010 gives 00000000, so the device is OFF.
