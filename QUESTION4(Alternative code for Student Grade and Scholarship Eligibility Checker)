@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+int main(void)
+{
+    /* Lookup table: index = marks / 10 */
+    char grades[] = {
+        'F', 'F', 'F', 'F', 'F',
+        'D', 'C', 'B', 'A', 'S', 'S'
+    };
+
+    double marks;
+    int grade_group;
+    char grade;
+
+    /* READ marks */
+    printf("Enter marks (0 to 100): ");
+    scanf("%lf", &marks);
+
+    if (marks < 0 || marks > 100) {
+
+        printf("Invalid Marks\n");
+
+    } else {
+
+        grade_group = (int)(marks / 10);   /* INTEGER PART OF (marks / 10) */
+
+        grade = grades[grade_group];
+
+        printf("Grade: %c\n", grade);
+    }
+
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter marks	a number from 0 to 100
+
+//Sample runs
+
+//Enter marks (0 to 100): 85
+//Grade: A
+//Enter marks (0 to 100): 100
+//Grade: S
+//Enter marks (0 to 100): 42
+//Grade: F
+//Enter marks (0 to 100): 120
+//Invalid Marks
+
+//How the lookup table works
+
+//Index (marks / 10)	0 to 4	5	6	7	8	9	10
+//Grade                F	    D	C	B	A	S	S
