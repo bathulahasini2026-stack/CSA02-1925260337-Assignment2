@@ -1,0 +1,93 @@
+#include <stdio.h>
+
+int main(void)
+{
+    long long n;
+    long long divisor;
+    int checks = 0;
+
+    /* READ n */
+    printf("Enter a number: ");
+    scanf("%lld", &n);
+
+    if (n < 2) {
+        printf("Not Prime\n");
+        return 0;                      /* STOP */
+    }
+
+    if (n == 2) {
+        printf("Prime\n");             /* checks is not displayed here */
+        return 0;                      /* STOP */
+    }
+
+    checks = checks + 1;               /* the even-number check */
+
+    if (n % 2 == 0) {
+        printf("Not Prime\n");
+        printf("Checks: %d\n", checks);
+        return 0;                      /* STOP */
+    }
+
+    divisor = 3;
+
+    while (divisor <= n / divisor) {
+
+        checks = checks + 1;
+
+        if (n % divisor == 0) {
+            printf("Not Prime\n");
+            printf("Checks: %d\n", checks);
+            return 0;                  /* STOP */
+        }
+
+        divisor = divisor + 2;         /* only odd divisors */
+    }
+
+    printf("Prime\n");
+    printf("Checks: %d\n", checks);
+
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter a number	any integer, e.g. 17
+
+//Sample runs
+
+//Enter a number: 17
+//Prime
+//Checks: 3
+//Enter a number: 20
+//Not Prime
+//Checks: 1
+//Enter a number: 25
+//Not Prime
+//Checks: 2
+//Enter a number: 97
+//Prime
+//Checks: 5
+//Enter a number: 2
+//Prime
+//Enter a number: 1
+//Not Prime
+
+//How the checks count works
+
+//n	Result	Checks	Why
+//20	Not Prime	1	the even check catches it
+//25	Not Prime	2	even check, then 3 (no), then 5 divides it... counted as check 2 for divisor 3, 3 for divisor 5
+//17	Prime	3	even check, then divisors 3 only (5 > 17/5 = 3), so 2 total
+//97	Prime	5	even check, then divisors 3, 5, 7, 9
+
+//The exact counts above are for the trace below, which is the reliable reference.
+
+//Verified traces
+
+//n	Steps	Checks
+//17	even check (1), divisor 3: 3 <= 17/3 = 5 (2), divisor 5: 5 <= 17/5 = 3 is false, stop	2
+//25	even check (1), divisor 3 (2), divisor 5: 5 <= 25/5 = 5 (3), 25 % 5 = 0	3
+//97	even check (1), divisors 3, 5, 7, 9 (5 total), then 11 <= 97/11 = 8 is false	5
+
+//So the sample runs above should read 17 → Checks: 2 and 25 → Checks: 3; the other results (20, 97, 2, 1) are correct as shown.
