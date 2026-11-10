@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+int main(void)
+{
+    int N;
+
+    /* READ N */
+    printf("Enter N: ");
+    if (scanf("%d", &N) != 1 || N < 0) {
+        printf("Invalid input\n");
+        return 1;
+    }
+
+    /* CREATE an array PRIME[0...N] */
+    bool *prime = (bool *)malloc((N + 1) * sizeof(bool));
+    if (prime == NULL) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    /* MARK all entries as TRUE */
+    for (int i = 0; i <= N; i++) {
+        prime[i] = true;
+    }
+
+    /* MARK PRIME[0] and PRIME[1] as FALSE */
+    prime[0] = false;
+    if (N >= 1) {
+        prime[1] = false;
+    }
+
+    /* Sieve: p goes from 2 up to the square root of N */
+    for (long long p = 2; p * p <= N; p++) {
+
+        if (prime[p] == true) {
+
+            for (long long multiple = p * p; multiple <= N; multiple += p) {
+                prime[multiple] = false;
+            }
+        }
+    }
+
+    /* DISPLAY all primes */
+    printf("Prime numbers up to %d:\n", N);
+    for (int number = 2; number <= N; number++) {
+        if (prime[number] == true) {
+            printf("%d ", number);
+        }
+    }
+    printf("\n");
+
+    free(prime);
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter N	a non-negative integer, e.g. 30
+
+//Sample runs
+
+//Enter N: 30
+//Prime numbers up to 30:
+//2 3 5 7 11 13 17 19 23 29
+//Enter N: 50
+//Prime numbers up to 50:
+//2 3 5 7 11 13 17 19 23 29 31 37 41 43 47
+//Enter N: 1
+//Prime numbers up to 1:
+
+//How it works (N = 30)
+
+//p	Is PRIME[p] TRUE?	Multiples crossed out
+//2	yes	4, 6, 8, 10, ... 30
+//3	yes	9, 12, 15, 18, 21, 24, 27, 30
+//4	no (already crossed out)	skipped
+//5	yes	25, 30
+//6	stops, since 6 × 6 = 36 > 30	
+
+//Everything still marked TRUE at the end is prime.
