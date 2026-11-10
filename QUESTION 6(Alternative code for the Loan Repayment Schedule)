@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(void)
+{
+    double principal, monthly_rate, monthly_payment;
+    double value, months;
+    int required_months;
+
+    /* READ inputs */
+    printf("Enter principal: ");
+    scanf("%lf", &principal);
+
+    printf("Enter monthly rate (as a fraction, e.g. 0.01 for 1%%): ");
+    scanf("%lf", &monthly_rate);
+
+    printf("Enter monthly payment: ");
+    scanf("%lf", &monthly_payment);
+
+    if (monthly_payment <= principal * monthly_rate) {
+        printf("Loan cannot be repaid with this payment\n");
+        return 0;                          /* STOP */
+    }
+
+    value = 1 - (monthly_rate * principal / monthly_payment);
+
+    if (value <= 0) {
+        printf("Invalid calculation\n");
+        return 0;                          /* STOP */
+    }
+
+    months = -log(value) / log(1 + monthly_rate);
+
+    required_months = (int)ceil(months);   /* ROUND UP to next integer */
+
+    printf("Required months: %d\n", required_months);
+
+    return 0;
+}
+
+//Inputs
+
+//Prompt	Enter	Example
+//Principal	loan amount	10000
+//Monthly rate	rate as a fraction, not a percent	0.01 means 1% per month
+//Monthly payment	fixed payment	2000
+
+//Sample runs
+
+//Enter principal: 10000
+//Enter monthly rate (as a fraction, e.g. 0.01 for 1%): 0.01
+//Enter monthly payment: 2000
+//Required months: 6
+//Enter principal: 10000
+//Enter monthly rate (as a fraction, e.g. 0.01 for 1%): 0.02
+//Enter monthly payment: 150
+//Loan cannot be repaid with this payment
+
+//How the formula works (principal = 10000, rate = 0.01, payment = 2000)
+
+//Step	Calculation	Result
+//value	1 - (0.01 × 10000 / 2000)	0.95
+//months	-ln(0.95) / ln(1.01)	about 5.15
+//required_months	round up 5.15	6
