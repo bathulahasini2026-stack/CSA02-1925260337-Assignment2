@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+/* Device positions (bit numbers 0 to 7) */
+enum Device {
+    LIGHT = 0,
+    FAN   = 1,
+    AC    = 2,
+    PUMP  = 3
+    /* bits 4 to 7 are unused */
+};
+
+uint8_t switch_on(uint8_t reg, int device)
+{
+    uint8_t mask = (uint8_t)(1U << device);
+    reg = reg | mask;
+    return reg;
+}
+
+uint8_t switch_off(uint8_t reg, int device)
+{
+    uint8_t mask = (uint8_t)(1U << device);
+    reg = reg & (uint8_t)(~mask);
+    return reg;
+}
+
+uint8_t toggle(uint8_t reg, int device)
+{
+    uint8_t mask = (uint8_t)(1U << device);
+    reg = reg ^ mask;
+    return reg;
+}
+
+bool is_on(uint8_t reg, int device)
+{
+    uint8_t mask = (uint8_t)(1U << device);
+
+    if ((reg & mask) != 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void display_binary(uint8_t reg)
+{
+    for (int bit = 7; bit >= 0; bit--) {
+        printf("%d", (reg >> bit) & 1);
+    }
+    printf("\n");
+}
+
+int count_on_devices(uint8_t reg)
+{
+    int count = 0;
+
+    for (int bit = 0; bit <= 7; bit++) {
+        if (is_on(reg, bit) == true) {
+            count = count + 1;
+        }
+    }
+    return count;
+}
+
+int main(void)
+{
+    uint8_t reg = 0;   /* INITIALIZE register = 00000000 */
+
+    reg = switch_on(reg, LIGHT);
+    reg = switch_on(reg, AC);
+
+    printf("Register after switching ON Light and AC : ");
+    display_binary(reg);
+
+    reg = toggle(reg, FAN);
+    reg = switch_off(reg, LIGHT);
+
+    printf("Register after toggling Fan, Light OFF   : ");
+    display_binary(reg);
+
+    printf("AC Status   : %s\n", is_on(reg, AC)   ? "ON" : "OFF");
+    printf("PUMP Status : %s\n", is_on(reg, PUMP) ? "ON" : "OFF");
+    printf("Number of devices ON: %d\n", count_on_devices(reg));
+
+    return 0;
+}
+//Output
+
+//Register after switching ON Light and AC : 00000101
+//Register after toggling Fan, Light OFF   : 00000110
+//AC Status   : ON
+//PUMP Status : OFF
+//Number of devices ON: 2
+
+//Step-by-step trace
+
+//Step	Operation	Register
+//Start	initialize	00000000
+//1	SWITCH_ON(LIGHT)	00000001
+//2	SWITCH_ON(AC)	00000101
+//3	TOGGLE(FAN)	00000111
+//4	SWITCH_OFF(LIGHT)	00000110
