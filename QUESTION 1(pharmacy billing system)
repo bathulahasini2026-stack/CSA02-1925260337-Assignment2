@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+int main(void)
+{
+    double price, quantity;
+    double gross_amount, discount, discounted_amount, gst, total_amount;
+    int senior_input;
+    bool senior_status;
+
+    /* READ inputs */
+    printf("Enter price: ");
+    scanf("%lf", &price);
+
+    printf("Enter quantity: ");
+    scanf("%lf", &quantity);
+
+    printf("Senior citizen? (1 = Yes, 0 = No): ");
+    scanf("%d", &senior_input);
+    senior_status = (senior_input == 1);
+
+    /* Calculations */
+    gross_amount = price * quantity;
+
+    if (senior_status) {
+        discount = gross_amount * 0.10;
+    } else {
+        discount = 0;
+    }
+
+    discounted_amount = gross_amount - discount;
+
+    gst = discounted_amount * 0.05;
+
+    total_amount = discounted_amount + gst;
+
+    if (total_amount > 1000) {
+        total_amount = total_amount - 50;
+    }
+
+    /* DISPLAY outputs */
+    printf("\nGross Amount : %.2f\n", gross_amount);
+    printf("Discount     : %.2f\n", discount);
+    printf("GST          : %.2f\n", gst);
+    printf("Total Amount : %.2f\n", total_amount);
+
+    return 0;
+}
+
+//Sample run (price = 600, quantity = 2, senior = 1):
+
+//Enter price: 600
+//Enter quantity: 2
+//Senior citizen? (1 = Yes, 0 = No): 1
+
+//output of the code
+
+//Gross Amount : 1200.00
+//Discount     : 120.00
+//GST          : 54.00
+//Total Amount : 1084.00
