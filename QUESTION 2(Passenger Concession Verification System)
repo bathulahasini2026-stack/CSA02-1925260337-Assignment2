@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define TOTAL_PASSENGERS 1000
+
+/* Simulates checking the disability card.
+   Here the operator enters the result; replace this with real
+   verification logic (database lookup, card scan, etc.) if needed. */
+bool verify_disability_card(void)
+{
+    int result;
+
+    printf("  Verify disability card (1 = Valid, 0 = Not valid): ");
+    scanf("%d", &result);
+
+    return (result == 1);
+}
+
+int main(void)
+{
+    int verification_calls = 0;
+    int senior_input, class_input;
+    bool senior_status, eligible_class;
+    bool disability_status, concession;
+
+    for (int passenger = 1; passenger <= TOTAL_PASSENGERS; passenger++) {
+
+        printf("\nPassenger %d\n", passenger);
+
+        /* READ inputs */
+        printf("  Senior citizen? (1 = Yes, 0 = No): ");
+        scanf("%d", &senior_input);
+        senior_status = (senior_input == 1);
+
+        printf("  Eligible class? (1 = Yes, 0 = No): ");
+        scanf("%d", &class_input);
+        eligible_class = (class_input == 1);
+
+        if (senior_status && eligible_class) {
+            concession = true;
+        } else {
+            verification_calls = verification_calls + 1;
+
+            disability_status = verify_disability_card();
+
+            if (disability_status == true) {
+                concession = true;
+            } else {
+                concession = false;
+            }
+        }
+
+        if (concession == true) {
+            printf("  Concession Approved\n");
+        } else {
+            printf("  Concession Not Approved\n");
+        }
+    }
+
+    printf("\nTotal verification calls: %d\n", verification_calls);
+
+    return 0;
+}
+
+//Sample run (with TOTAL_PASSENGERS set to 3) and OUTPUTS
+
+//Passenger 1
+ // Senior citizen? (1 = Yes, 0 = No): 1
+ // Eligible class? (1 = Yes, 0 = No): 1
+ // Concession Approved
+
+//Passenger 2
+  //Senior citizen? (1 = Yes, 0 = No): 0
+  //Eligible class? (1 = Yes, 0 = No): 1
+ // Verify disability card (1 = Valid, 0 = Not valid): 1
+ // Concession Approved
+
+//Passenger 3
+ // Senior citizen? (1 = Yes, 0 = No): 0
+  //Eligible class? (1 = Yes, 0 = No): 0
+ // Verify disability card (1 = Valid, 0 = Not valid): 0
+ // Concession Not Approved
+
+//Total verification calls: 2
+//Passenger 1 qualified directly, so no verification was needed. Passengers 2 and 3 each triggered a verification call, so the final count is 2.
