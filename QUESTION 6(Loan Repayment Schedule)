@@ -1,0 +1,113 @@
+#include <stdio.h>
+
+#define MAX_MONTHS 360
+#define TOLERANCE  0.01
+
+int main(void)
+{
+    double principal, monthly_interest_rate, monthly_payment;
+    double rate, balance, total_interest, first_interest;
+    double interest, payment;
+    int month;
+
+    /* READ inputs */
+    printf("Enter principal: ");
+    scanf("%lf", &principal);
+
+    printf("Enter monthly interest rate (in %%): ");
+    scanf("%lf", &monthly_interest_rate);
+
+    printf("Enter monthly payment: ");
+    scanf("%lf", &monthly_payment);
+
+    /* Validate inputs */
+    if (principal <= 0 || monthly_interest_rate < 0 || monthly_payment <= 0) {
+        printf("Invalid Input\n");
+        return 0;                          /* STOP */
+    }
+
+    rate = monthly_interest_rate / 100;
+
+    balance = principal;
+    total_interest = 0;
+    month = 0;
+
+    /* Check that the payment covers at least the first month's interest */
+    first_interest = balance * rate;
+
+    if (monthly_payment <= first_interest) {
+        printf("Repayment is insufficient\n");
+        return 0;                          /* STOP */
+    }
+
+    printf("\n%-6s %-12s %-12s %-12s\n", "Month", "Interest", "Payment", "Balance");
+
+    while (balance > TOLERANCE && month < MAX_MONTHS) {
+
+        interest = balance * rate;
+
+        balance = balance + interest;
+
+        total_interest = total_interest + interest;
+
+        if (balance < monthly_payment) {
+            payment = balance;
+        } else {
+            payment = monthly_payment;
+        }
+
+        balance = balance - payment;
+
+        month = month + 1;
+
+        printf("%-6d %-12.2f %-12.2f %-12.2f\n", month, interest, payment, balance);
+    }
+
+    printf("\n");
+
+    if (balance <= TOLERANCE) {
+        printf("Loan Fully Repaid\n");
+    } else {
+        printf("Maximum repayment period reached\n");
+    }
+
+    printf("Total interest paid: %.2f\n", total_interest);
+    printf("Months taken       : %d\n", month);
+
+    return 0;
+}
+
+//Inputs
+
+//Prompt	Enter	Example
+//Principal	loan amount (must be > 0)	10000
+//Monthly interest rate	rate in percent (not a fraction)	1 means 1% per month
+//Monthly payment	fixed payment (must be > 0)	2000
+
+//Sample run (principal = 10000, rate = 1%, payment = 2000)
+
+//Enter principal: 10000
+//Enter monthly interest rate (in %): 1
+//Enter monthly payment: 2000
+
+//Month  Interest     Payment      Balance
+//1      100.00       2000.00      8100.00
+//2      81.00        2000.00      6181.00
+//3      61.81        2000.00      4242.81
+//4      42.43        2000.00      2285.24
+//5      22.85        2000.00      308.09
+//6      3.08         311.17       0.00
+
+//Loan Fully Repaid
+//Total interest paid: 311.17
+//Months taken       : 6
+
+//Other cases
+
+//Enter principal: 10000
+//Enter monthly interest rate (in %): 2
+//Enter monthly payment: 150
+Repayment is insufficient
+
+(The first month’s interest is 200, which is more than the 150 payment, so the balance would only grow.)Inputs
+
