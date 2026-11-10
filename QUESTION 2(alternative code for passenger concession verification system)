@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+int main(void)
+{
+    int senior_input, class_input, card_input;
+    bool senior_status, eligible_class;
+    bool concession = false;        /* starts FALSE so it is never uninitialized */
+    bool disability_card_valid = false;
+
+    /* READ inputs */
+    printf("Senior citizen? (1 = Yes, 0 = No): ");
+    scanf("%d", &senior_input);
+    senior_status = (senior_input == 1);
+
+    printf("Eligible class? (1 = Yes, 0 = No): ");
+    scanf("%d", &class_input);
+    eligible_class = (class_input == 1);
+
+    if (senior_status == true) {
+
+        if (eligible_class == true) {
+            concession = true;
+        } else {
+            /* VERIFY disability_card */
+            printf("Verify disability card (1 = Valid, 0 = Not valid): ");
+            scanf("%d", &card_input);
+            disability_card_valid = (card_input == 1);
+        }
+
+    } else {
+        /* VERIFY disability_card */
+        printf("Verify disability card (1 = Valid, 0 = Not valid): ");
+        scanf("%d", &card_input);
+        disability_card_valid = (card_input == 1);
+    }
+
+    if (concession == true || disability_card_valid == true) {
+        printf("Concession Approved\n");
+    } else {
+        printf("Concession Not Approved\n");
+    }
+
+    return 0;
+}
+
+Inputs
+
+Prompt	                  Enter               Meaning                	
+Senior citizen?	          1 or 0	            1 = Yes, 0 = No
+Eligible class?	          1 or 0	            1 = Yes, 0 = No
+Verify disability card?	  1 or 0	            1 = Valid, 0 = Not valid (asked only when needed)
+
+Sample runs and outputs
+
+Senior citizen? (1 = Yes, 0 = No): 1
+Eligible class? (1 = Yes, 0 = No): 1
+Concession Approved
+
+Senior citizen? (1 = Yes, 0 = No): 0
+Eligible class? (1 = Yes, 0 = No): 1
+Verify disability card (1 = Valid, 0 = Not valid): 0
+Concession Not Approved
