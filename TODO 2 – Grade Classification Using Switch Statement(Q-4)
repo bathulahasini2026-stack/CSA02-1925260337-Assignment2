@@ -1,0 +1,79 @@
+#include <stdio.h>
+
+/* Converts marks to a grade; returns '?' for invalid marks */
+char get_grade(int marks)
+{
+    int grade_group;
+    char grade;
+
+    if (marks < 0 || marks > 100) {
+        return '?';
+    }
+
+    grade_group = marks / 10;      /* integer division */
+
+    switch (grade_group) {
+
+        case 10:
+        case 9:
+            grade = 'S';
+            break;
+
+        case 8:
+            grade = 'A';
+            break;
+
+        case 7:
+            grade = 'B';
+            break;
+
+        case 6:
+            grade = 'C';
+            break;
+
+        case 5:
+            grade = 'D';
+            break;
+
+        default:
+            grade = 'F';
+    }
+
+    return grade;
+}
+
+int main(void)
+{
+    int marks;
+    char grade;
+
+    /* READ marks */
+    printf("Enter marks (0 to 100): ");
+    scanf("%d", &marks);
+
+    grade = get_grade(marks);
+
+    if (grade == '?') {
+        printf("Invalid Marks\n");
+    } else {
+        printf("Grade: %c\n", grade);
+    }
+
+    return 0;
+}
+
+//Input
+
+//Prompt	Enter
+//Enter marks	a whole number from 0 to 100
+
+//Sample runs
+
+//Enter marks (0 to 100): 85
+//Grade: A
+//Enter marks (0 to 100): 100
+//Grade: S
+//Enter marks (0 to 100): 42
+//Grade: F
+//Enter marks (0 to 100): 120
+//Invalid Marks
