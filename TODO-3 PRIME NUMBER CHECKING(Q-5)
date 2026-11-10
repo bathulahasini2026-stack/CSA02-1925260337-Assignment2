@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+unsigned long checks = 0;
+
+/* Returns 1 if n is prime, otherwise 0. */
+int is_prime(unsigned long n)
+{
+    checks = 0;
+
+    if (n < 2)
+        return 0;
+
+    /* i <= n / i is the same as i * i <= n, but cannot overflow */
+    for (unsigned long i = 2; i <= n / i; i++)
+    {
+        checks++;
+
+        if (n % i == 0)
+            return 0;
+    }
+
+    return 1;
+}
+
+int main(void)
+{
+    unsigned long tickets[] = {97, 100, 7919, 1000003};
+
+    for (int k = 0; k < 4; k++)
+    {
+        int p = is_prime(tickets[k]);
+
+        printf("%8lu %-9s divisions = %lu\n",
+               tickets[k],
+               p ? "prime" : "not prime",
+               checks);
+    }
+
+    return 0;
+}
+
+//Output
+     // 97 prime     divisions = 8
+    // 100 not prime divisions = 1
+   // 7919 prime     divisions = 87
+// 1000003 prime     divisions = 999
