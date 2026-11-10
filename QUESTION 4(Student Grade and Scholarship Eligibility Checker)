@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+/* Assumptions: the pseudocode does not give these values, so change them as needed */
+#define INCOME_LIMIT 500000.0    /* maximum family income allowed (per year) */
+
+/* Grades eligible for the scholarship: S, A and B */
+bool is_grade_eligible(char grade)
+{
+    return (grade == 'S' || grade == 'A' || grade == 'B');
+}
+
+int main(void)
+{
+    double marks, family_income;
+    int grade_group;
+    char grade;
+
+    /* READ marks */
+    printf("Enter marks (0 to 100): ");
+    scanf("%lf", &marks);
+
+    if (marks < 0 || marks > 100) {
+
+        printf("Invalid Marks\n");
+        grade = '?';
+
+    } else {
+
+        grade_group = (int)(marks / 10);   /* INTEGER PART OF (marks / 10) */
+
+        switch (grade_group) {
+
+            case 10:
+            case 9:
+                grade = 'S';
+                break;
+
+            case 8:
+                grade = 'A';
+                break;
+
+            case 7:
+                grade = 'B';
+                break;
+
+            case 6:
+                grade = 'C';
+                break;
+
+            case 5:
+                grade = 'D';
+                break;
+
+            default:
+                grade = 'F';
+        }
+    }
+
+    /* DISPLAY grade */
+    printf("Grade: %c\n", grade);
+
+    /* READ family_income */
+    printf("Enter family income: ");
+    scanf("%lf", &family_income);
+
+    /* CHECK scholarship eligibility */
+    if (is_grade_eligible(grade) && family_income <= INCOME_LIMIT) {
+        printf("Scholarship Eligible\n");
+    } else {
+        printf("Scholarship Not Eligible\n");
+    }
+
+    return 0;
+}
+
+//Inputs
+
+//Prompt	Enter
+//Enter marks	a number from 0 to 100
+//Enter family income	the yearly family income, e.g. 300000
+
+//Sample runs
+
+//Enter marks (0 to 100): 85
+//Grade: A
+//Enter family income: 300000
+//Scholarship Eligible
+//Enter marks (0 to 100): 92
+//Grade: S
+//Enter family income: 800000
+//Scholarship Not Eligible
+//Enter marks (0 to 100): 120
+//Invalid Marks
+//Grade: ?
+//Enter family income: 200000
+//Scholarship Not Eligible
+
+//Grade table
+
+//Marks	Grade
+//90 to 100	S
+//80 to 89	A
+//70 to 79	B
+//60 to 69	C
+//50 to 59	D
+//below 50	F
